@@ -8,20 +8,44 @@ datasource db {
 }
 
 model User {
-  id       Int    @unique @default(autoincrement())
-  name     String @db.VarChar(70)
-  email    String @unique @db.VarChar(70)
-  password String @db.VarChar(70)
+  id        Int      @unique @default(autoincrement())
+  name      String   @db.VarChar(70)
+  email     String   @unique @db.VarChar(70)
+  password  String   @db.VarChar(70)
+  createdAt DateTime @default(now())
 }
 
 model Curriculum {
-  id    Int    @unique @default(autoincrement())
-  name  String @db.VarChar(70)
-  email String @unique @db.VarChar(70)
-  telephone String @unique @db.VarChar(14)
-  objective String @db.VarChar(1500)
-  pro_experience String @db.VarChar(1500)
-  back_academic String @db.VarChar(1500)
-  skills String @db.VarChar(1500)
-  references String @db.VarChar(600)
+  id             Int      @unique @default(autoincrement())
+  name           String   @db.VarChar(70)
+  email          String   @unique @db.VarChar(70)
+  telephone      String   @unique @db.VarChar(14)
+  objective      String?  @db.VarChar(1500)
+  pro_experience String?  @db.VarChar(1500)
+  back_academic  String?  @db.VarChar(1500)
+  skills         String?  @db.VarChar(1500)
+  references     String?  @db.VarChar(600)
+  createdAt      DateTime @default(now())
+
+  file   CurriculumFile? @relation(fields: [fileId], references: [id])
+  fileId Int?            @unique
+}
+
+model CurriculumFile {
+  id         Int      @unique @default(autoincrement())
+  filename   String   @db.VarChar(70)
+  filepath   String   @db.VarChar(150)
+  mimetype   String
+  uploadDate DateTime @default(now())
+
+  curriculumId Int?        @unique
+  curriculum   Curriculum?
+}
+
+model Photo {
+  id         Int      @id @default(autoincrement())
+  filename   String   @db.VarChar(70)
+  filepath   String   @db.VarChar(150)
+  mimetype   String
+  uploadDate DateTime @default(now())
 }
